@@ -5,6 +5,24 @@
     <title>Currency Conversion Calculator</title>
 </head>
 <body>
+    <h1>Exchange rates based on Narodowy Bank Polski</h1>
+    <p>Source: <a href="https://nbp.pl/">Narodowy Bank Polski</a></p>
 
+    <form method="post" action="/">
+        <div class="container">
+
+            <label for="currency"><b>Choose currency:</b></label>
+                <select name="currency" id="currency">
+                    {% for rate in data[0]['rates'] %}
+                        <option value="{{ rate['code'] }}">{{ rate['code'] }}</option>
+                    {% endfor %}
+                </select><br>
+            <label for="amount"><b>What amount of currency would you like to buy?:</b></label>
+            <input type="text" name="amount" required><br>
+            <button type="submit" id="submit-btn">Calculate</button>
+            <p>The exchange requires {{ result }}.</p>
+
+        </div>
+    </form>
 </body>
 </html>
