@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Exchange Rates</title>
+{% endblock %}
+
+
+    {% block header %}
+    <a id="link" href="http://127.0.0.1:5000/calculator">Go to calculator</a>
+    {% endblock %}
+{% block content %}
+    <h2>Exchange Rates</h2>
+
+    <table>
+        <tr>
+            <th>Currency</th>
+            <th>Code</th>
+            <th>Bid</th>
+            <th>Ask</th>
+        </tr>
+        {% for row in data %}
+            <tr>
+                <td>{{ row['currency'] }}</td>
+                <td>{{ row['code'] }}</td>
+                <td>{{ row['bid'] }}</td>
+                <td>{{ row['ask'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form method="get" action="{{ url_for('download_csv') }}">
+        <button type="submit" id="download-btn">Download CSV</button>
+    </form>
+{% endblock %}

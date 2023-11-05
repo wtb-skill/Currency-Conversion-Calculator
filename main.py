@@ -1,6 +1,10 @@
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import locale
+import csv
+import io
+
+app = Flask(__name__)
 
 
 def get_rates():
@@ -10,14 +14,45 @@ def get_rates():
     return _data
 
 
-data = get_rates()
+def create_csv(data):
+    with io.StringIO() as output:
+        writer = csv.writer(output)
 
-app = Flask(__name__)
+        # Write the CSV header
+        writer.writerow(['Currency', 'Code', 'Bid', 'Ask'])
+
+        for row in data[0]['rates']:
+            writer.writerow([row['currency'], row['code'], row['bid'], row['ask']])
+
+        output.seek(0)  # Reset the file pointer to the beginning
+        return send_file(
+            io.BytesIO(output.getvalue().encode('utf-8')),
+            as_attachment=True,
+            download_name='exchange_rates.csv',
+            mimetype='text/csv'
+        )
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route('/download_csv', methods=['GET'])
+def download_csv():
+    data = get_rates()  # Fetch fresh data from the API
+    return create_csv(data)
+
+
+@app.route('/display_rates')
+def display_csv_data():
+    data = get_rates()  # Fetch fresh data from the API
+    date = data[0]['effectiveDate']
+
+    return render_template('exchange_rates.html', data=data[0]['rates'], date=date)
+
+
+@app.route("/calculator", methods=["GET", "POST"])
 def currency_calculator():
     result = None
+    data = get_rates()  # Fetch fresh data from the API
+    date = data[0]['effectiveDate']
+
     if request.method == "POST":
         selected_currency = request.form['currency']
         amount = float(request.form['amount'])
@@ -30,13 +65,12 @@ def currency_calculator():
         formatted_result = locale.currency(result, grouping=True)
 
         return render_template('calculator.html', data=data, result=formatted_result,
-                               selected_currency=selected_currency)
+                               selected_currency=selected_currency, date=date, amount=amount)
 
-    return render_template("calculator.html", data=data)
+    return render_template("calculator.html", data=data, date=date)
 
 
 if __name__ == '__main__':
     locale.setlocale(locale.LC_ALL, 'pl_PL.utf8')  # Polish locale
     app.run(debug=True)
-    # print(data)
 

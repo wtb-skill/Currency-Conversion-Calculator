@@ -1,0 +1,98 @@
+:root {
+    --background-color: #efc8b1;
+    --text-color: #514644;
+    --primary-color: #C97543;
+    --secondary-color: #E4A781;
+    --accent-color: hsl(28, 58%, 70%);
+    --accent-color2: hsl(28, 69%, 79%);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ccc; /* Add a border to the table */
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Caveat', cursive;
+    padding: 10px;
+}
+
+h1 {
+    background-color: var(--primary-color);
+    margin: 0; /* Remove top margin for h1 element */
+    padding: 10px;
+    text-align: center; /* Center-align h1 text */
+    border: 5px solid #000;
+}
+
+h2 {
+    text-align: center;
+    clear: both;
+}
+
+th {
+    background-color: var(--accent-color);
+    padding: 10px;
+    border: 1px solid #ccc; /* Add borders to header cells */
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+    white-space: pre;
+    font-family: monospace;
+}
+
+#download-btn {
+    background-color: var(--secondary-color);
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center; /* Center-align #submit-btn text */
+    float: right;
+    border: 3px solid #000;
+    cursor: pointer;
+}
+
+#link, #source {
+    background-color: var(--secondary-color);
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    float: right;
+    border: 3px solid #000;
+}
+
+#source {
+    float: left;
+}
+
+.container{
+    clear: both; /* Clear both floated elements (source and link) */
+}
+
+#download-btn:hover, #calculate-btn:hover {
+    background-color: var(--primary-color);
+}
+
+#calculate-btn {
+    background-color: var(--accent-color);
+    padding: 5px;
+    border: 2px solid #000;
+    cursor: pointer;
+}
+
+#amount, #currency {
+    background-color: var(--accent-color);
+    padding: 5px;
+    border: 2px solid #000;
+}
+
+table tr:hover {
+    background-color: var(--accent-color2);
+}
+

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <h1>Exchange rates for {{ date }}, based on Narodowy Bank Polski</h1>
+    <div id="header">
+        <p id="source">Source: <a href="https://nbp.pl/" target="_blank">Narodowy Bank Polski</a></p>
+        {% block header %}{% endblock %}
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>
