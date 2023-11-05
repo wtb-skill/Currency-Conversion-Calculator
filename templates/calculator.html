@@ -22,7 +22,7 @@
             <label for="amount"><b>What amount of currency would you like to buy?:</b></label>
             <input type="number" name="amount" id="amount" step="0.01" min="0" required><br>
             <button type="submit" id="calculate-btn">Calculate</button>
-            <p>The exchange of {{ amount }} {{ selected_currency }} requires: {{ result }}</p>
+            <p><b>{{ message }}</b></p>
 
         </div>
     </form>

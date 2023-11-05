@@ -1,9 +1,8 @@
 import requests
 from flask import Flask, render_template, request, send_file
-import locale
 import csv
 import io
-from typing import Any, List, Dict, Union
+from typing import Any, List, Dict
 
 app = Flask(__name__)
 
@@ -89,15 +88,16 @@ def currency_calculator() -> str:
                 result = amount * exchange_rate
                 break  # Stop searching when you find the selected currency
 
-        formatted_result = locale.currency(result, grouping=True)
+        formatted_amount = '{:,.2f}'.format(amount)
+        rounded_result = round(result, 2)
+        formatted_result = '{:,.2f}'.format(rounded_result)
+        message = f"The exchange of {formatted_amount} {selected_currency} requires {formatted_result} PLN."
 
-        return render_template('calculator.html', data=data, result=formatted_result,
-                               selected_currency=selected_currency, date=date, amount=amount)
+        return render_template('calculator.html', data=data, date=date, message=message)
 
     return render_template("calculator.html", data=data, date=date)
 
 
 if __name__ == '__main__':
-    locale.setlocale(locale.LC_ALL, 'pl_PL.utf8')  # Polish locale
     app.run(debug=True)
 
