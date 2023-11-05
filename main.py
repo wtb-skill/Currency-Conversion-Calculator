@@ -3,18 +3,30 @@ from flask import Flask, render_template, request, send_file
 import locale
 import csv
 import io
+from typing import Any, List, Dict, Union
 
 app = Flask(__name__)
 
 
-def get_rates():
+def get_rates() -> List[Dict[str, Any]]:
+    """
+    Fetches currency exchange rate data from NBP API.
+
+    :return: List[Dict[str, Any]]: A list of dictionaries containing currency exchange rate data.
+    """
     response = requests.get("http://api.nbp.pl/api/exchangerates/tables/C?format=json")
     response.raise_for_status()
     _data = response.json()
     return _data
 
 
-def create_csv(data):
+def create_csv(data: List[Dict[str, Any]]) -> Any:
+    """
+    Creates a CSV file with currency exchange rate data.
+
+    :param data: (List[Dict[str, Any]]): List of dictionaries containing currency exchange rate data.
+    :return: Any: A CSV file as an attachment.
+    """
     with io.StringIO() as output:
         writer = csv.writer(output)
 
@@ -34,13 +46,23 @@ def create_csv(data):
 
 
 @app.route('/download_csv', methods=['GET'])
-def download_csv():
+def download_csv() -> Any:
+    """
+    Endpoint for downloading the CSV file of currency exchange rates.
+
+    :return: Any: A CSV file as an attachment.
+    """
     data = get_rates()  # Fetch fresh data from the API
     return create_csv(data)
 
 
 @app.route('/display_rates')
-def display_csv_data():
+def display_csv_data() -> str:
+    """
+    Displays currency exchange rate data.
+
+    :return: str: Rendered HTML page.
+    """
     data = get_rates()  # Fetch fresh data from the API
     date = data[0]['effectiveDate']
 
@@ -48,7 +70,12 @@ def display_csv_data():
 
 
 @app.route("/calculator", methods=["GET", "POST"])
-def currency_calculator():
+def currency_calculator() -> str:
+    """
+    Currency conversion calculator.
+
+    :return: str: Rendered HTML page.
+    """
     result = None
     data = get_rates()  # Fetch fresh data from the API
     date = data[0]['effectiveDate']
